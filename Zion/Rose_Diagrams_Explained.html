@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rose Diagrams Explained</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* VOICE everyday learning: a field-methods handout for a geology class
+   IDEA a page from a field-methods manual, printed in Navajo Sandstone colours, with a compass-dial rose
+   PICTURE one large live rose diagram, compass-graduated, redrawn as the controls move
+   COLOUR white page; Navajo salmon band; Zion red petals; dark ink. Night: canyon brown, glowing petals
+   TYPE Barlow Semi Condensed (map lettering) + Source Sans 3
+   LAYOUT laptop: title across the top of the band, rose left, controls right; phone: title, rose, controls */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#171311);--ink:light-dark(#1d1a17,#f3ece7);--soft:light-dark(#5c524b,#c9bdb4);--band:light-dark(#f4c9ac,#3a211a);--panel:light-dark(#fffaf6,#241a16);--line:light-dark(#d9b9a3,#5a3d32);--petal:light-dark(#b23a1e,#f2875c);--petal2:light-dark(#e07a52,#a8492b);--accent:light-dark(#1f4e5f,#8fd0e0);--err:light-dark(#a3241a,#ff8a7a)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Barlow Semi Condensed",Arial,sans-serif;line-height:1.05;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px);font-weight:700}
+h2{font-size:clamp(26px,3.2vw,34px);font-weight:600;margin-bottom:10px}
+h3{font-size:21px;font-weight:600;margin-bottom:6px}
+p{margin:0 0 10px;max-width:68ch}
+.band{padding-block:clamp(26px,4vw,56px);padding-inline:max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.hero{background:var(--band)}
+.lede{font-size:18px;max-width:60ch;margin-top:10px}
+.top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);margin-top:22px;align-items:stretch}
+.fig{position:relative;min-height:440px;flex:1}
+.figcol{display:flex;flex-direction:column}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+svg text{font-family:"Source Sans 3",Arial,sans-serif;font-size:14px;fill:var(--ink);paint-order:stroke;stroke:var(--band);stroke-width:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5em,1fr));gap:10px 16px;margin-bottom:14px}
+.read b{display:block;font:600 26px/1.1 "Barlow Semi Condensed",Arial,sans-serif;white-space:nowrap}
+.read span{font-size:14px;color:var(--soft)}
+.verdict{font-size:16px;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.lab{font-size:14px;font-weight:600;margin:12px 0 6px;display:flex;justify-content:space-between}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:600 15px "Source Sans 3",Arial,sans-serif;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--petal);border-color:var(--petal);color:var(--bg)}
+.seg button:focus-visible,.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--petal);height:44px}
+input[type=range]:disabled{opacity:.4}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:var(--petal)}
+textarea{width:100%;min-height:76px;font:16px/1.4 "Source Sans 3",Arial,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.err{color:var(--err);font-size:14px;min-height:1.2em;margin:4px 0 0}
+.note{font-size:14px;color:var(--soft)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:center}
+.mfig{position:relative;min-height:300px}
+.mfig>svg{position:absolute;inset:0;width:100%;height:100%}
+.mfig svg text{stroke:var(--bg)}
+.means{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px;margin:14px 0}
+.means div{border:1px solid var(--line);border-radius:10px;padding:12px}
+.sw{display:inline-block;width:26px;height:0;border-top:4px solid var(--soft);vertical-align:middle;margin-right:6px}
+.means b{display:block;font:600 30px/1.1 "Barlow Semi Condensed",Arial,sans-serif}
+.alt{background:var(--panel)}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pair figure{margin:0}
+.pair .mfig{min-height:220px}
+figcaption{font-size:15px;margin-top:4px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(15em,1fr));gap:16px;margin-top:16px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--bg)}
+.card .mfig{min-height:150px;margin-bottom:8px}
+.card p{font-size:15px}
+.pit{display:grid;grid-template-columns:repeat(auto-fit,minmax(16em,1fr));gap:16px;margin-top:16px}
+.pit div{border-top:3px solid var(--petal);padding-top:10px}
+.pit p{font-size:15px}
+footer{font-size:14px;color:var(--soft)}
+@media(max-width:760px){.top,.two{grid-template-columns:minmax(0,1fr)}.fig{min-height:340px}}
+@media(max-width:420px){.pair{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header class="band hero">
+<div class="wrap">
+<h1>Rose diagrams</h1>
+<p class="lede">A histogram wrapped around a compass. Directional readings are sorted into angle bins, and each bin becomes a wedge that points the way its readings point. Long petals mark the directions that dominate.</p>
+<div class="top">
+<div class="figcol"><div class="fig"><svg id="rose" role="img" aria-label="Live rose diagram"></svg></div>
+<p class="note" id="dataNote">Simulated example data</p></div>
+<div class="panel" aria-live="polite">
+<div class="read">
+<div><b id="rN">63</b><span>readings (n)</span></div>
+<div><b id="rMean">196°</b><span id="rMeanLab">vector mean</span></div>
+<div><b id="rR">0.72</b><span>mean resultant length, R̄</span></div>
+<div><b id="rP">&lt;0.001</b><span>Rayleigh test p</span></div>
+</div>
+<p class="verdict" id="verdict"></p>
+<div class="lab">Data</div>
+<div class="seg" id="kind">
+<button type="button" data-k="navajo">Cross-beds</button>
+<button type="button" data-k="joints">Joint strikes</button>
+<button type="button" data-k="tidal">Tidal currents</button>
+<button type="button" data-k="uniform">No preference</button>
+</div>
+<div class="lab"><label for="n">Sample size</label><span id="nOut">63</span></div>
+<input type="range" id="n" min="8" max="200" step="1" value="63">
+<div class="lab">Bin width</div>
+<div class="seg" id="bins">
+<button type="button" data-b="10">10°</button><button type="button" data-b="15">15°</button><button type="button" data-b="20">20°</button><button type="button" data-b="30">30°</button><button type="button" data-b="45">45°</button>
+</div>
+<label class="chk"><input type="checkbox" id="area"> Equal-area petals (radius ∝ √count)</label>
+<label class="chk"><input type="checkbox" id="axial"> Axial data: lines, not directions</label>
+<label class="chk"><input type="checkbox" id="showMean" checked> Show the mean</label>
+<details id="own"><summary class="lab" style="cursor:pointer;display:list-item">Plot your own readings</summary>
+<label for="paste" class="note">Azimuths 0–360°, separated by spaces, commas or new lines</label>
+<textarea id="paste" placeholder="e.g. 192 205 188 214 176"></textarea>
+<p class="err" id="err" role="alert"></p>
+<div class="row"><button type="button" class="btn" id="plot">Plot readings</button><button type="button" class="btn" id="copy">Copy bin counts</button><span class="note" id="copied"></span></div>
+</details>
+</div>
+</div>
+</div>
+</header>
+
+<section class="band">
+<div class="wrap two">
+<div>
+<h2>Why you can’t just average directions</h2>
+<p>Directions wrap around. 350° and 10° are only 20° apart, but their arithmetic mean is 180°, which points the opposite way. The fix is the vector mean: add up each reading’s north and east components, then turn the total back into an angle. The length of that total, divided by n, is R̄: 1 when every reading agrees, near 0 when they cancel out.</p>
+<div class="lab"><label for="a1">Reading A</label><span id="a1o">350°</span></div>
+<input type="range" id="a1" min="0" max="359" step="1" value="350">
+<div class="lab"><label for="a2">Reading B</label><span id="a2o">10°</span></div>
+<input type="range" id="a2" min="0" max="359" step="1" value="10">
+<div class="means">
+<div><span class="note"><i class="sw" style="border-top:3px dashed var(--ink)"></i>Arithmetic mean</span><b id="am">180°</b></div>
+<div><span class="note"><i class="sw" style="border-top-color:var(--petal);border-top-width:5px"></i>Vector mean</span><b id="vm" style="color:var(--petal)">0°</b></div>
+</div>
+<p class="note"><i class="sw"></i>Grey lines: readings A and B</p>
+</div>
+<div class="mfig"><svg id="dial" role="img" aria-label="Compass showing two readings and their two means"></svg></div>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap two">
+<div>
+<h2>Directions or lines?</h2>
+<p>A cross-bed dip direction has a true direction: 200° is not the same as 020°. A joint strike does not: 040° and 220° describe the same line. That is axial data. Bin it from 0 to 180° and draw each petal twice, on opposite sides, so the rose is symmetric.</p>
+<p>Plot the same joint strikes as if they were directions and half the rose disappears, which looks like a preferred direction that isn’t there.</p>
+</div>
+<div class="pair">
+<figure><div class="mfig"><svg id="ax1" role="img" aria-label="Joint strikes plotted wrongly as directions"></svg></div><figcaption>Treated as directions: wrong</figcaption></figure>
+<figure><div class="mfig"><svg id="ax2" role="img" aria-label="Joint strikes plotted correctly as axial data"></svg></div><figcaption>Treated as axial: right</figcaption></figure>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>What geologists use them for</h2>
+<div class="cards">
+<div class="card"><div class="mfig"><svg id="u1" role="img" aria-label="Unimodal rose, petals to the south-southwest"></svg></div><h3>Paleocurrents and paleowinds</h3><p>Cross-bed foresets dip downstream or downwind. Navajo Sandstone foresets dipping mostly southward record Jurassic winds from the north. Ripple marks, flute casts and imbricated pebbles work the same way.</p></div>
+<div class="card"><div class="mfig"><svg id="u2" role="img" aria-label="Axial rose with two joint sets"></svg></div><h3>Joints, fractures and faults</h3><p>Strike orientations reveal the stress field that broke the rock. In hydrogeology, fracture sets often steer which way groundwater moves.</p></div>
+<div class="card"><div class="mfig"><svg id="u3" role="img" aria-label="Narrow axial rose aligned north-northeast"></svg></div><h3>Glacial ice flow</h3><p>Striations and the long axes of elongated clasts line up with the direction the ice moved.</p></div>
+<div class="card"><div class="mfig"><svg id="u4" role="img" aria-label="Wind rose with petals toward the southwest"></svg></div><h3>Wind roses</h3><p>Meteorologists and airport planners use the same plot for prevailing winds. One catch: a wind rose shows where wind comes <i>from</i>, while a cross-bed shows where it went.</p></div>
+</div>
+</div>
+</section>
+
+<section class="band alt">
+<div class="wrap">
+<h2>Four things to check before you trust one</h2>
+<div class="pit">
+<div><h3>Enough readings for the bins</h3><p>With 8 readings in 10° bins, most petals are noise. Use wider bins or more data, and put n and the bin width in the caption.</p><button type="button" class="btn" data-demo="few">Show me</button></div>
+<div><h3>Axial or directional?</h3><p>Strikes, striations and clast long axes are lines. Plotting them as directions draws half a rose and invents a preferred direction.</p><button type="button" class="btn" data-demo="axial">Show me</button></div>
+<div><h3>Petal length vs. area</h3><p>A petal twice as long has four times the area, so big bins look more dominant than they are. Equal-area petals fix that; either way, say which you used.</p><button type="button" class="btn" data-demo="area">Show me</button></div>
+<div><h3>One north for everyone</h3><p>Clino and Rockd set to true north are fine. A hand compass needs the magnetic declination added, about 10° east around Zion; check the NOAA calculator for the current value.</p></div>
+</div>
+</div>
+</section>
+
+<footer class="band"><div class="wrap">GEOL 230 Earth Data Visualization · The cross-bed, joint, tidal, glacial and wind data on this page are simulated examples, not field measurements.</div></footer>
+
+<script>
+{
+const $=id=>document.getElementById(id);
+const wrap=a=>((a%360)+360)%360;
+const W16=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+const pt=a=>W16[Math.round(wrap(a)/22.5)%16];
+const deg=a=>String(Math.round(wrap(a))%360).padStart(3,"0")+"°";
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function makeRng(s){return()=>(s=s*16807%2147483647)/2147483647}
+function gauss(r){const u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+const PRESETS={
+ navajo:{axial:false,label:"Cross-bed dip directions",gen:r=>wrap(195+38*gauss(r))},
+ joints:{axial:true,label:"Joint strikes, two sets",gen:r=>{const s=r()<.5;return ((s?40+8*gauss(r):128+10*gauss(r))%180+180)%180}},
+ tidal:{axial:false,label:"Current directions, ebb and flood",gen:r=>wrap((r()<.55?70:250)+24*gauss(r))},
+ uniform:{axial:false,label:"Directions with no preference",gen:r=>r()*360}};
+const cache={};
+function data(k){if(!cache[k]){const r=makeRng(k.length*977+13+k.charCodeAt(0));cache[k]=Array.from({length:200},()=>PRESETS[k].gen(r))}return cache[k]}
+const S={kind:"navajo",n:63,bin:20,area:false,axial:false,mean:true,custom:null};
+
+function stats(v,axial){
+ const n=v.length;if(!n)return{n:0,mean:NaN,R:0,p:1};
+ let C=0,Sn=0;for(const a of v){const t=(axial?2*a:a)*Math.PI/180;C+=Math.cos(t);Sn+=Math.sin(t)}
+ const Rn=Math.hypot(C,Sn),R=Rn/n;let m=Math.atan2(Sn,C)*180/Math.PI;m=wrap(m);if(axial)m=m/2;
+ const p=Math.min(1,Math.exp(Math.sqrt(1+4*n+4*(n*n-Rn*Rn))-(1+2*n)));
+ return{n,mean:m,R,p};
+}
+function chiP(c){const n=c.reduce((a,b)=>a+b,0),k=c.length;if(n<k*2)return 1;const e=n/k;let x=0;for(const o of c)x+=(o-e)**2/e;const df=k-1,z=(Math.cbrt(x/df)-(1-2/(9*df)))/Math.sqrt(2/(9*df));const t=1/(1+0.2316419*Math.abs(z)),d=0.3989423*Math.exp(-z*z/2),q=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return z>0?q:1-q}
+function counts(v,bw,axial){const span=axial?180:360,k=span/bw,c=new Array(k).fill(0);for(const a of v){const x=axial?((a%180)+180)%180:wrap(a);c[Math.min(k-1,Math.floor(x/bw))]++}return c}
+function nice(max){const raw=max/4,p=10**Math.floor(Math.log10(raw||1)),f=raw/p;const s=(f<=1?1:f<=2?2:f<=5?5:10)*p;const out=[];for(let x=s;x<=max;x+=s)out.push(x);return out}
+
+function rose(svg,v,o){
+ const W=svg.clientWidth,H=svg.clientHeight;if(!W||!H)return;
+ const pad=o.mini?6:(W<380?30:38),cx=W/2,cy=H/2,R0=Math.max(20,Math.min(W,H)/2-pad);
+ const span=o.axial?180:360,c=counts(v,o.bin,o.axial),mx=Math.max(1,...c);
+ const rad=x=>R0*(o.area?Math.sqrt(x/mx):x/mx);
+ const P=(a,r)=>[cx+r*Math.sin(a*Math.PI/180),cy-r*Math.cos(a*Math.PI/180)];
+ const f=n=>n.toFixed(1);
+ let g=`<circle cx="${cx}" cy="${cy}" r="${R0}" fill="none" stroke="var(--line)" stroke-width="1.5"/>`;
+ if(!o.mini){
+  for(const t of nice(mx)){const r=rad(t);g+=`<circle cx="${cx}" cy="${cy}" r="${f(r)}" fill="none" stroke="var(--line)" stroke-dasharray="3 4"/>`}
+  for(let a=0;a<360;a+=10){const l=a%90===0?12:a%30===0?8:4,[x1,y1]=P(a,R0),[x2,y2]=P(a,R0+l);g+=`<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" stroke="var(--soft)" stroke-width="${a%90?1:2}"/>`}
+ }
+ for(let i=0;i<c.length;i++){if(!c[i])continue;const r=rad(c[i]);
+  for(const off of o.axial?[0,180]:[0]){const a0=i*o.bin+off,a1=a0+o.bin,[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);
+   g+=`<path class="petal" d="M${f(cx)} ${f(cy)}L${f(x0)} ${f(y0)}A${f(r)} ${f(r)} 0 0 1 ${f(x1)} ${f(y1)}Z" fill="${off?"var(--petal2)":"var(--petal)"}" stroke="var(--panel)" stroke-width="1"><title>${a0%360}–${a1%360===0?360:a1%360}°: ${c[i]} reading${c[i]===1?"":"s"}</title></path>`}}
+ if(o.mean&&v.length>1){const s=stats(v,o.axial);const L=Math.max(R0*s.R,8);
+  const [x,y]=P(s.mean,L);const [xb,yb]=o.axial?P(s.mean+180,L):[cx,cy];
+  g+=`<line x1="${f(xb)}" y1="${f(yb)}" x2="${f(x)}" y2="${f(y)}" stroke="var(--accent)" stroke-width="${o.mini?2.5:4}" stroke-linecap="round"/>`;
+  const hd=(ax,ay,ang)=>{const [l1x,l1y]=[ax-12*Math.sin((ang-25)*Math.PI/180),ay+12*Math.cos((ang-25)*Math.PI/180)],[l2x,l2y]=[ax-12*Math.sin((ang+25)*Math.PI/180),ay+12*Math.cos((ang+25)*Math.PI/180)];return `<path d="M${f(l1x)} ${f(l1y)}L${f(ax)} ${f(ay)}L${f(l2x)} ${f(l2y)}" fill="none" stroke="var(--accent)" stroke-width="${o.mini?2.5:4}" stroke-linecap="round" stroke-linejoin="round"/>`};
+  if(!o.mini){g+=hd(x,y,s.mean);if(o.axial)g+=hd(xb,yb,s.mean+180)}
+ }
+ if(!o.mini){for(const [lab,a] of [["N",0],["E",90],["S",180],["W",270]]){const [x,y]=P(a,R0+(a%180?24:22));g+=`<text x="${f(x)}" y="${f(y)}" text-anchor="middle" dominant-baseline="central" font-weight="600">${lab}</text>`}
+  const t=nice(mx);if(t.length){const tt=t[t.length-1],[x,y]=P(45,rad(tt));g+=`<text x="${f(x+4)}" y="${f(y-4)}">${tt}</text>`}}
+ svg.innerHTML=g;
+}
+
+function current(){return S.custom?S.custom:data(S.kind).slice(0,S.n)}
+function render(){
+ const v=current(),s=stats(v,S.axial);
+ rose($("rose"),v,{bin:S.bin,area:S.area,axial:S.axial,mean:S.mean});
+ $("rN").textContent=s.n;
+ $("rMean").textContent=s.n>1?(S.axial?deg(s.mean)+"/"+deg(s.mean+180):deg(s.mean)):"–";
+ $("rMeanLab").textContent=S.axial?"mean axis":"vector mean";
+ $("rR").textContent=s.R.toFixed(2);
+ $("rP").textContent=s.p<0.001?"<0.001":s.p.toFixed(3);
+ let msg;const dir=S.axial?pt(s.mean)+"–"+pt(s.mean+180):pt(s.mean);
+ if(s.R>=.6)msg=`Strong preferred ${S.axial?"orientation":"direction"}: ${dir}. The petals and the mean agree.`;
+ else if(s.R<.3&&chiP(counts(v,S.bin,S.axial))<.01)msg=`The readings are clustered, not random, but in more than one ${S.axial?"orientation":"direction"}, so they cancel in the mean. Describe each cluster separately; the mean arrow is meaningless here.`;
+ else if(s.R>=.3&&s.p<.05)msg=`Moderate preference toward ${dir}, but look at the petals: a spread-out or two-peaked rose can share this mean.`;
+ else if(s.p<.05)msg=`R̄ is low but the Rayleigh test says it isn’t random. Two opposed peaks? A mean can hide them; read the petals instead.`;
+ else msg="No clear preferred direction: the readings could be random. The mean arrow means little here.";
+ $("verdict").textContent=msg;
+ $("dataNote").textContent=S.custom?`Your ${s.n} readings · ${S.bin}° bins${S.area?" · equal-area":""}`:`Simulated example data: ${PRESETS[S.kind].label.toLowerCase()} · ${S.bin}° bins${S.area?" · equal-area":""}`;
+ for(const b of $("kind").querySelectorAll("button"))b.setAttribute("aria-pressed",String(!S.custom&&b.dataset.k===S.kind));
+ for(const b of $("bins").querySelectorAll("button"))b.setAttribute("aria-pressed",String(+b.dataset.b===S.bin));
+ $("n").disabled=!!S.custom;$("n").value=S.n;$("nOut").textContent=S.custom?`${s.n} (your data)`:S.n;
+ $("area").checked=S.area;$("axial").checked=S.axial;$("showMean").checked=S.mean;
+}
+$("kind").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.kind=b.dataset.k;S.custom=null;S.axial=PRESETS[S.kind].axial;render()});
+$("bins").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.bin=+b.dataset.b;render()});
+$("n").addEventListener("input",e=>{S.n=+e.target.value;render()});
+$("area").addEventListener("change",e=>{S.area=e.target.checked;render()});
+$("axial").addEventListener("change",e=>{S.axial=e.target.checked;render()});
+$("showMean").addEventListener("change",e=>{S.mean=e.target.checked;render()});
+$("paste").addEventListener("input",()=>{$("err").textContent=""});
+$("plot").addEventListener("click",()=>{
+ const raw=$("paste").value.trim();if(!raw){$("err").textContent="Paste at least 3 azimuths first.";return}
+ const parts=raw.split(/[\s,;]+/).filter(Boolean),bad=parts.filter(x=>!/^\d+(\.\d+)?$/.test(x)||+x>360);
+ if(bad.length){$("err").textContent=`Not an azimuth from 0 to 360: ${bad.slice(0,3).join(", ")}`;return}
+ if(parts.length<3){$("err").textContent="Paste at least 3 azimuths.";return}
+ S.custom=parts.map(x=>+x%360);render();$("rose").scrollIntoView({behavior:"smooth",block:"center"})});
+$("copy").addEventListener("click",async()=>{const c=counts(current(),S.bin,S.axial);const span=S.axial?180:360;
+ const csv="bin_start_deg,bin_end_deg,count\n"+c.map((x,i)=>`${i*S.bin},${Math.min(span,(i+1)*S.bin)},${x}`).join("\n");
+ try{await navigator.clipboard.writeText(csv);$("copied").textContent="Copied as CSV"}catch(e){$("copied").textContent="Copy blocked by the browser"}});
+for(const b of document.querySelectorAll("[data-demo]"))b.addEventListener("click",()=>{const d=b.dataset.demo;S.custom=null;
+ if(d==="few"){S.kind="navajo";S.n=8;S.bin=10;S.area=false;S.axial=false}
+ if(d==="axial"){S.kind="joints";S.n=120;S.bin=10;S.axial=false}
+ if(d==="area"){S.kind="navajo";S.n=63;S.bin=20;S.area=!S.area;S.axial=false}
+ render();$("rose").scrollIntoView({behavior:"smooth",block:"center"})});
+
+function dial(){
+ const svg=$("dial"),W=svg.clientWidth,H=svg.clientHeight;if(!W)return;
+ const a=+$("a1").value,b=+$("a2").value,cx=W/2,cy=H/2,R=Math.min(W,H)/2-34;
+ const P=(t,r)=>[cx+r*Math.sin(t*Math.PI/180),cy-r*Math.cos(t*Math.PI/180)];
+ const am=(a+b)/2,C=Math.cos(a*Math.PI/180)+Math.cos(b*Math.PI/180),Sn=Math.sin(a*Math.PI/180)+Math.sin(b*Math.PI/180),Rn=Math.hypot(C,Sn),vm=wrap(Math.atan2(Sn,C)*180/Math.PI);
+ $("a1o").textContent=a+"°";$("a2o").textContent=b+"°";$("am").textContent=deg(am);$("vm").textContent=Rn<1e-6?"undefined":deg(vm);
+ const ln=(t,r,col,w,dash)=>{const [x,y]=P(t,r);return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" ${dash?'stroke-dasharray="7 6"':""}/>`};
+ let g=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="var(--line)" stroke-width="1.5"/>`;
+ for(const [lab,t] of [["N",0],["E",90],["S",180],["W",270]]){const [x,y]=P(t,R+20);g+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-weight="600">${lab}</text>`}
+ g+=ln(a,R,"var(--soft)",3)+ln(b,R,"var(--soft)",3)+ln(am,R*.82,"var(--ink)",3,true);
+ if(Rn>1e-6)g+=ln(vm,R*.82,"var(--petal)",5);
+ const lab=(t,r,txt,col)=>{const [x,y]=P(t,r);return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="central" style="fill:${col}">${txt}</text>`};
+  svg.innerHTML=g;
+}
+$("a1").addEventListener("input",dial);$("a2").addEventListener("input",dial);
+
+const jt=data("joints").slice(0,120);
+const minis=[["ax1",jt,{bin:10,axial:false,mini:true}],["ax2",jt,{bin:10,axial:true,mini:true}],
+ ["u1",data("navajo").slice(0,80),{bin:20,mini:true,mean:true}],["u2",jt,{bin:10,axial:true,mini:true}],
+ ["u3",(()=>{const r=makeRng(4242);return Array.from({length:60},()=>((22+9*gauss(r))%180+180)%180)})(),{bin:10,axial:true,mini:true}],
+ ["u4",(()=>{const r=makeRng(99);return Array.from({length:90},()=>wrap((r()<.7?225:300)+30*gauss(r)))})(),{bin:22.5,mini:true}]];
+function drawAll(){render();dial();for(const [id,v,o] of minis)rose($(id),v,o)}
+const ro=new ResizeObserver(()=>drawAll());
+for(const id of ["rose","dial",...minis.map(m=>m[0])])ro.observe($(id));
+S.axial=PRESETS[S.kind].axial;drawAll();
+}
+</script>
+</body>
+</html>
