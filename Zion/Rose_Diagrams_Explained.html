@@ -72,6 +72,12 @@ figcaption{font-size:15px;margin-top:4px}
 .pit div{border-top:3px solid var(--petal);padding-top:10px}
 .pit p{font-size:15px}
 footer{font-size:14px;color:var(--soft)}
+sup a{color:var(--petal);text-decoration:none;font-weight:600;font-size:12px;padding:0 1px}
+sup a:focus-visible{outline:2px solid var(--accent)}
+.refs ol{padding-left:1.6em;margin:12px 0 0;columns:2 22em;column-gap:40px}
+.refs li{font-size:15px;margin:0 0 10px;break-inside:avoid;overflow-wrap:anywhere}
+.refs li:target{background:var(--band)}
+.refs a{color:var(--accent)}
 @media(max-width:760px){.top,.two{grid-template-columns:minmax(0,1fr)}.fig{min-height:340px}}
 @media(max-width:420px){.pair{grid-template-columns:minmax(0,1fr)}}
 </style>
@@ -80,7 +86,7 @@ footer{font-size:14px;color:var(--soft)}
 <header class="band hero">
 <div class="wrap">
 <h1>Rose diagrams</h1>
-<p class="lede">A histogram wrapped around a compass. Directional readings are sorted into angle bins, and each bin becomes a wedge that points the way its readings point. Long petals mark the directions that dominate.</p>
+<p class="lede">A histogram wrapped around a compass. Directional readings are sorted into angle bins, and each bin becomes a wedge that points the way its readings point. Long petals mark the directions that dominate.<sup><a href="#r1">1</a></sup></p>
 <div class="top">
 <div class="figcol"><div class="fig"><svg id="rose" role="img" aria-label="Live rose diagram"></svg></div>
 <p class="note" id="dataNote">Simulated example data</p></div>
@@ -92,6 +98,7 @@ footer{font-size:14px;color:var(--soft)}
 <div><b id="rP">&lt;0.001</b><span>Rayleigh test p</span></div>
 </div>
 <p class="verdict" id="verdict"></p>
+<p class="note" style="margin-top:-6px">Vector mean and R̄ follow Curray<sup><a href="#r2">2</a></sup> and Fisher<sup><a href="#r1">1</a></sup>; Rayleigh p uses Zar’s approximation<sup><a href="#r3">3</a></sup>; two-cluster check is a χ² test against a uniform distribution<sup><a href="#r4">4</a></sup>.</p>
 <div class="lab">Data</div>
 <div class="seg" id="kind">
 <button type="button" data-k="navajo">Cross-beds</button>
@@ -123,7 +130,7 @@ footer{font-size:14px;color:var(--soft)}
 <div class="wrap two">
 <div>
 <h2>Why you can’t just average directions</h2>
-<p>Directions wrap around. 350° and 10° are only 20° apart, but their arithmetic mean is 180°, which points the opposite way. The fix is the vector mean: add up each reading’s north and east components, then turn the total back into an angle. The length of that total, divided by n, is R̄: 1 when every reading agrees, near 0 when they cancel out.</p>
+<p>Directions wrap around. 350° and 10° are only 20° apart, but their arithmetic mean is 180°, which points the opposite way. The fix is the vector mean: add up each reading’s north and east components, then turn the total back into an angle. The length of that total, divided by n, is R̄: 1 when every reading agrees, near 0 when they cancel out.<sup><a href="#r2">2</a>,<a href="#r1">1</a></sup></p>
 <div class="lab"><label for="a1">Reading A</label><span id="a1o">350°</span></div>
 <input type="range" id="a1" min="0" max="359" step="1" value="350">
 <div class="lab"><label for="a2">Reading B</label><span id="a2o">10°</span></div>
@@ -142,7 +149,7 @@ footer{font-size:14px;color:var(--soft)}
 <div class="wrap two">
 <div>
 <h2>Directions or lines?</h2>
-<p>A cross-bed dip direction has a true direction: 200° is not the same as 020°. A joint strike does not: 040° and 220° describe the same line. That is axial data. Bin it from 0 to 180° and draw each petal twice, on opposite sides, so the rose is symmetric.</p>
+<p>A cross-bed dip direction has a true direction: 200° is not the same as 020°. A joint strike does not: 040° and 220° describe the same line. That is axial data, the kind Krumbein met in pebble long axes.<sup><a href="#r5">5</a></sup> Bin it from 0 to 180° and draw each petal twice, on opposite sides, so the rose is symmetric; for its mean, double the angles, average, then halve.<sup><a href="#r4">4</a></sup></p>
 <p>Plot the same joint strikes as if they were directions and half the rose disappears, which looks like a preferred direction that isn’t there.</p>
 </div>
 <div class="pair">
@@ -156,10 +163,10 @@ footer{font-size:14px;color:var(--soft)}
 <div class="wrap">
 <h2>What geologists use them for</h2>
 <div class="cards">
-<div class="card"><div class="mfig"><svg id="u1" role="img" aria-label="Unimodal rose, petals to the south-southwest"></svg></div><h3>Paleocurrents and paleowinds</h3><p>Cross-bed foresets dip downstream or downwind. Navajo Sandstone foresets dipping mostly southward record Jurassic winds from the north. Ripple marks, flute casts and imbricated pebbles work the same way.</p></div>
-<div class="card"><div class="mfig"><svg id="u2" role="img" aria-label="Axial rose with two joint sets"></svg></div><h3>Joints, fractures and faults</h3><p>Strike orientations reveal the stress field that broke the rock. In hydrogeology, fracture sets often steer which way groundwater moves.</p></div>
-<div class="card"><div class="mfig"><svg id="u3" role="img" aria-label="Narrow axial rose aligned north-northeast"></svg></div><h3>Glacial ice flow</h3><p>Striations and the long axes of elongated clasts line up with the direction the ice moved.</p></div>
-<div class="card"><div class="mfig"><svg id="u4" role="img" aria-label="Wind rose with petals toward the southwest"></svg></div><h3>Wind roses</h3><p>Meteorologists and airport planners use the same plot for prevailing winds. One catch: a wind rose shows where wind comes <i>from</i>, while a cross-bed shows where it went.</p></div>
+<div class="card"><div class="mfig"><svg id="u1" role="img" aria-label="Unimodal rose, petals to the south-southeast"></svg></div><h3>Paleocurrents and paleowinds</h3><p>Cross-bed foresets dip in the direction the wind or water was moving.<sup><a href="#r6">6</a></sup> At Zion, Navajo Sandstone cross-beds record Early Jurassic winds from the north-northwest, so the foresets dip mostly to the south-southeast.<sup><a href="#r7">7</a></sup> Ripple marks, flute casts and imbricated pebbles work the same way.</p></div>
+<div class="card"><div class="mfig"><svg id="u2" role="img" aria-label="Axial rose with two joint sets"></svg></div><h3>Joints, fractures and faults</h3><p>Joint orientations record the stress field when the rock broke.<sup><a href="#r8">8</a></sup> In fractured-rock aquifers, the orientations of fracture sets largely control which directions groundwater flows most easily.<sup><a href="#r9">9</a></sup></p></div>
+<div class="card"><div class="mfig"><svg id="u3" role="img" aria-label="Narrow axial rose aligned north-northeast"></svg></div><h3>Glacial ice flow</h3><p>Striations scratched into bedrock line up with the direction the ice moved.<sup><a href="#r10">10</a></sup> Clast long axes in till are axial data, plotted the same way.<sup><a href="#r5">5</a></sup></p></div>
+<div class="card"><div class="mfig"><svg id="u4" role="img" aria-label="Wind rose with petals toward the southwest"></svg></div><h3>Wind roses</h3><p>Meteorologists and airport planners use the same plot for prevailing winds. One catch: a wind rose shows where wind comes <i>from</i>,<sup><a href="#r11">11</a></sup> while a cross-bed shows where it went.</p></div>
 </div>
 </div>
 </section>
@@ -168,11 +175,34 @@ footer{font-size:14px;color:var(--soft)}
 <div class="wrap">
 <h2>Four things to check before you trust one</h2>
 <div class="pit">
-<div><h3>Enough readings for the bins</h3><p>With 8 readings in 10° bins, most petals are noise. Use wider bins or more data, and put n and the bin width in the caption.</p><button type="button" class="btn" data-demo="few">Show me</button></div>
+<div><h3>Enough readings for the bins</h3><p>With 8 readings in 10° bins, most petals are noise, and the choice of bin width and starting angle alone can change the picture.<sup><a href="#r12">12</a></sup> Use wider bins or more data, and put n and the bin width in the caption.</p><button type="button" class="btn" data-demo="few">Show me</button></div>
 <div><h3>Axial or directional?</h3><p>Strikes, striations and clast long axes are lines. Plotting them as directions draws half a rose and invents a preferred direction.</p><button type="button" class="btn" data-demo="axial">Show me</button></div>
-<div><h3>Petal length vs. area</h3><p>A petal twice as long has four times the area, so big bins look more dominant than they are. Equal-area petals fix that; either way, say which you used.</p><button type="button" class="btn" data-demo="area">Show me</button></div>
-<div><h3>One north for everyone</h3><p>Clino and Rockd set to true north are fine. A hand compass needs the magnetic declination added, about 10° east around Zion; check the NOAA calculator for the current value.</p></div>
+<div><h3>Petal length vs. area</h3><p>A petal twice as long has four times the area, so big bins look more dominant than they are. Equal-area petals, with radius proportional to the square root of the count, fix that;<sup><a href="#r13">13</a>,<a href="#r14">14</a></sup> either way, say which you used.</p><button type="button" class="btn" data-demo="area">Show me</button></div>
+<div><h3>One north for everyone</h3><p>Clino and Rockd set to true north are fine. A hand compass needs the magnetic declination added: about 10.5° east at Zion in late 2026, from the World Magnetic Model.<sup><a href="#r15">15</a></sup> Check NOAA’s calculator for other places and dates.</p></div>
 </div>
+</div>
+</section>
+
+<section class="band refs" id="references">
+<div class="wrap">
+<h2>References</h2>
+<ol>
+<li id="r1">Fisher, N.I. (1993). <i>Statistical Analysis of Circular Data</i>. Cambridge University Press.</li>
+<li id="r2">Curray, J.R. (1956). The analysis of two-dimensional orientation data. <i>Journal of Geology</i>, 64(2), 117–131.</li>
+<li id="r3">Zar, J.H. (1999). <i>Biostatistical Analysis</i> (4th ed.). Prentice Hall. Rayleigh test p-value approximation.</li>
+<li id="r4">Davis, J.C. (1986). <i>Statistics and Data Analysis in Geology</i> (2nd ed.). Wiley. Doubled angles for axial data; χ² test of uniformity.</li>
+<li id="r5">Krumbein, W.C. (1939). Preferred orientation of pebbles in sedimentary deposits. <i>Journal of Geology</i>, 47(7), 673–706.</li>
+<li id="r6">National Park Service. Navajo Sandstone. Zion National Park. <a href="https://www.nps.gov/zion/learn/nature/navajo.htm">nps.gov/zion/learn/nature/navajo.htm</a></li>
+<li id="r7">National Park Service. Source of the Navajo Sand. Zion National Park. <a href="https://www.nps.gov/zion/learn/nature/sand-source.htm">nps.gov/zion/learn/nature/sand-source.htm</a></li>
+<li id="r8">Pollard, D.D., and Aydin, A. (1988). Progress in understanding jointing over the past century. <i>Geological Society of America Bulletin</i>, 100, 1181–1204.</li>
+<li id="r9">The Groundwater Project. <i>Structural Geology Applied to Fractured Aquifer Characterization</i>, §3.1 Stress orientation, tectonic regimes and geometric patterns of faults and joints. <a href="https://books.gw-project.org/structural-geology-applied-to-fractured-aquifer-characterization/?p=1191">books.gw-project.org</a></li>
+<li id="r10">U.S. Geological Survey. <i>The Geologic Story of Isle Royale National Park</i>, Bulletin 1309: Striations. <a href="https://npshistory.com/publications/geology/bul/1309/sec5c.htm">npshistory.com/publications/geology/bul/1309</a></li>
+<li id="r11">USDA Natural Resources Conservation Service. Wind Rose Data. <a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/water/wind-rose-data">nrcs.usda.gov</a></li>
+<li id="r12">Wells, N.A. (2000). Are there better alternatives to standard rose diagrams? <i>Journal of Sedimentary Research</i>, 70(1).</li>
+<li id="r13">Nemec, W. (1988). The shape of the rose. <i>Sedimentary Geology</i>, 59(1–2), 149–152. <a href="https://doi.org/10.1016/0037-0738(88)90105-4">doi:10.1016/0037-0738(88)90105-4</a></li>
+<li id="r14">Sanderson, D.J., and Peacock, D.C.P. (2020). Making rose diagrams fit-for-purpose. <i>Earth-Science Reviews</i>, 201, 103055. <a href="https://doi.org/10.1016/j.earscirev.2019.103055">doi:10.1016/j.earscirev.2019.103055</a></li>
+<li id="r15">NOAA NCEI Geomagnetic Modeling Team and British Geological Survey (2024). World Magnetic Model 2025. <a href="https://doi.org/10.25921/aqfd-sd83">doi:10.25921/aqfd-sd83</a>. Declination at 37.20° N, 112.99° W for Nov 2026 computed from WMM2025. Calculator: <a href="https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml">ngdc.noaa.gov/geomag/calculators</a></li>
+</ol>
 </div>
 </section>
 
@@ -189,7 +219,7 @@ const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).tri
 function makeRng(s){return()=>(s=s*16807%2147483647)/2147483647}
 function gauss(r){const u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
 const PRESETS={
- navajo:{axial:false,label:"Cross-bed dip directions",gen:r=>wrap(195+38*gauss(r))},
+ navajo:{axial:false,label:"Cross-bed dip directions",gen:r=>wrap(160+38*gauss(r))},
  joints:{axial:true,label:"Joint strikes, two sets",gen:r=>{const s=r()<.5;return ((s?40+8*gauss(r):128+10*gauss(r))%180+180)%180}},
  tidal:{axial:false,label:"Current directions, ebb and flood",gen:r=>wrap((r()<.55?70:250)+24*gauss(r))},
  uniform:{axial:false,label:"Directions with no preference",gen:r=>r()*360}};
